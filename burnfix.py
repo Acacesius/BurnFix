@@ -408,8 +408,9 @@ Look for the burn marks on this flat screen. For each mark:
   2. Paint over the mark    left-drag = paint, right-drag = erase, mouse wheel = brush size
                             R = rectangle tool, B = back to brush
   3. Up / Down arrows       dial the strength until the mark melts into the background
-                            (hold Shift for big steps). If Up makes it WORSE, the mark is brighter
-                            than its surroundings: keep pressing Down, through zero into negative.
+                            (hold Shift for big steps).
+  4. I = FLIP               If painting made the mark stand out MORE, it is brighter than its
+                            surroundings, not darker. Press I to flip the layer, then dial it in.
 
   T      shape this layer from the screenshot taken at launch (logo, taskbar, UI)
          instead of a flat fill - paint roughly over the area, the detail comes from the image
@@ -478,7 +479,7 @@ def calibrate():
         i = st["layer"]
         s = model.strength[i]
         cv.itemconfigure(stat_id, text=(
-            f"layer {i + 1}   strength {s:+.2f} ({'lifting a dark mark' if s > 0 else 'dimming a bright mark' if s < 0 else 'off'})   "
+            f"layer {i + 1}   strength {s:+.2f} ({'mark is DARKER: trimming around it' if s > 0 else 'mark is BRIGHTER: trimming the mark' if s < 0 else 'off'}, I flips)   "
             f"{'screenshot-shaped' if model.tex[i] else 'flat'}   tool: {st['tool']}   "
             f"brush {st['radius']}px   {'feathered' if model.feather else 'whole-screen'}   "
             f"correction {'ON' if st['show'] else 'OFF'}"))
@@ -579,6 +580,8 @@ def calibrate():
             st["tool"] = "rect"
         elif kl == "t":
             model.tex[i] = not model.tex[i]
+        elif kl == "i":  # flip this layer between "mark is darker" and "mark is brighter"
+            model.strength[i] = -model.strength[i] if model.strength[i] else -4.0
         elif kl == "f":
             model.feather = not model.feather
         elif kl == "g":

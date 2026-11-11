@@ -4,9 +4,23 @@ A software mask for OLED burn-in on Windows. You paint over the ghost image on a
 flat grey screen, turn one dial until it disappears, and a click-through overlay
 keeps it cancelled on your desktop.
 
-**Status: experimental.** The overlay and its maths are tested. Whether it hides
-a given burn mark well depends on the panel and on how closely you trace the
-mark. It has not yet been confirmed to fully hide a real one.
+**Status: experimental.** It has worked as intended on one real panel (a QD-OLED
+ultrawide with a burned-in logo). How well it hides a given mark depends on the
+panel and on how closely you trace the mark.
+
+## Darker or brighter? Press `I`
+
+Burn-in usually shows as a mark that is darker than its surroundings, and that
+is what BurnFix assumes when you start painting. On the panel this was built
+for, the mark was the other way round: brighter than the grey around it. That
+happens when the burned-in image was dark on a bright background, or when the
+panel's own refresh cycles have over-corrected the area. Correcting in the
+wrong direction makes the mark stand out more.
+
+So if painting makes your mark worse, press `I`. It flips the current layer from
+"mark is darker" to "mark is brighter" (and back), and the status line shows
+which one you are in. Each layer has its own direction, so one map can hold
+both kinds of mark.
 
 ## What it does and doesn't do
 
@@ -41,8 +55,8 @@ python burnfix.py selftest
 1. Run `Calibrate.bat` (or `python burnfix.py calibrate`). The screen goes flat
    grey with the controls listed on it.
 2. Pick a layer (`1`-`9`) and paint over the burn mark.
-3. Press Up/Down until the mark melts into the background. If Up makes it worse,
-   the mark is brighter than its surroundings: keep pressing Down into negative.
+3. If the mark got more visible when you painted it, press `I` to flip the layer.
+   Then press Up/Down until the mark melts into the background.
 4. Check other grey levels and colours with `G` and `C`; `Space` compares
    correction off and on.
 5. `Esc` saves and starts the overlay.
@@ -53,6 +67,7 @@ python burnfix.py selftest
 | Mouse wheel | Brush size |
 | `B` / `R` | Brush / rectangle tool |
 | Up / Down (Shift = big steps) | Strength of the current layer, positive or negative |
+| `I` | Flip the layer between "mark is darker" and "mark is brighter" |
 | `1`-`9` | Select layer; use one per mark of different depth |
 | `T` | Shape the layer from the screenshot taken at launch instead of a flat fill |
 | `G` / `C` | Test screen grey level / colour |
