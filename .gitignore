@@ -1,0 +1,5 @@
+__pycache__/
+burnmap.npz
+*.tmp.npz
+editing.lock
+stop.flag
